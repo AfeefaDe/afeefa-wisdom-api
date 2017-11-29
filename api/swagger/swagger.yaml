@@ -1,0 +1,155 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Afeefa Wisdom API
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /chapters:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: chapters_controller
+    get:
+      description: Returns list of chapters
+      # used as the method name of the controller
+      operationId: index
+      parameters:
+        - name: name
+          in: query
+          description: The name of the person to whom to say chapters
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ChaptersResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: Create chapter
+      # used as the method name of the controller
+      operationId: create
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Chapter object that should be created"
+          required: true
+          schema:
+            $ref: "#/definitions/Chapter"
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: "#/definitions/Chapter"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /chapters/{id}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: chapters_controller
+    get:
+      description: Returns a single chapter
+      # used as the method name of the controller
+      operationId: show
+      parameters:
+        - name: id
+          in: path
+          description: id of the chapter
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/Chapter"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    patch:
+      description: Update chapter
+      # used as the method name of the controller
+      operationId: update
+      parameters:
+        - name: id
+          in: path
+          description: id of the chapter
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "Chapter object that should be updated"
+          required: true
+          schema:
+            $ref: "#/definitions/Chapter"
+      responses:
+        "200":
+          description: Created
+          schema:
+            $ref: "#/definitions/Chapter"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: Update chapter
+      # used as the method name of the controller
+      operationId: delete
+      parameters:
+        - name: id
+          in: path
+          description: id of the chapter
+          required: true
+          type: string
+      responses:
+        "204":
+          description: Success, no content
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  ChaptersResponse:
+      type: array
+      minimum: 0
+      items:
+        $ref: "#/definitions/Chapter"
+  Chapter:
+    required:
+      - title
+    properties:
+      title:
+        type: string
+      content:
+        type: string
+      order:
+        type: integer
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string

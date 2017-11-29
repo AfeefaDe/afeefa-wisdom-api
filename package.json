@@ -1,0 +1,43 @@
+{
+  "name": "afeefa-wisdom-api",
+  "version": "0.0.1",
+  "private": true,
+  "description": "New Swagger API Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "mysql2": "^1.5.1",
+    "sequelize": "^4.23.0",
+    "sequelize-cli": "^3.1.0",
+    "restify": "^4.0.2",
+    "swagger-restify-mw": "^0.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1",
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^4.0.1",
+    "chai": "^4.1.2",
+    "should": "^7.1.0",
+    "supertest": "^3.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test",
+    "lint": "eslint . --ext .js",
+    "dev": "DEBUG=afeefa-wisdom-api nodemon app.js --exec 'npm run lint && node'",
+    "debug": "DEBUG=afeefa-wisdom-api nodemon --debug app.js --exec 'npm run lint && node'"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "docs/*"
+    ]
+  }
+}
