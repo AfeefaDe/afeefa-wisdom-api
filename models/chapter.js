@@ -5,12 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     content: DataTypes.STRING,
     order: DataTypes.INTEGER
-  }, {
-    classMethods: {
-      associate: function (models) {
-        // associations can be defined here
-      }
-    }
   })
   return Chapter
 }

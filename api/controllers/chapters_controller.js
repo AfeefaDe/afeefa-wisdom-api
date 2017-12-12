@@ -42,7 +42,9 @@ module.exports = {
 function index (req, res, next) {
   models.Chapter.findAll().then(chapters => {
     if (chapters) {
-      res.json(chapters)
+      // https://github.com/swagger-api/swagger-node/issues/313#issuecomment-217765835 awkward
+      res.header('content-type', 'application/json')
+      res.end(chapters)
     } else {
       const err = new restify.errors.NotFoundError()
       next(err)
