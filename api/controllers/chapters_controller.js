@@ -26,6 +26,7 @@ var models = require('../../models')
   we specify that in the exports of this module that 'hello' maps to the function named 'hello'
  */
 module.exports = {
+  meta: meta,
   index: index,
   show: show,
   create: create,
@@ -104,6 +105,15 @@ function destroy (req, res, next) {
       const err = new restify.errors.NotFoundError()
       next(err)
     }
+  }).catch(err => {
+    next(err)
+  })
+}
+
+function meta (req, res, next) {
+  models.Chapter.count().then(amount => {
+    res.header('content-type', 'application/json')
+    res.end(amount)
   }).catch(err => {
     next(err)
   })

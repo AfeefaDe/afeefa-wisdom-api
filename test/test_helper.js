@@ -6,11 +6,13 @@ var chai = require('chai')
 global.assert = chai.assert
 global.expect = chai.expect
 
-var db = require('../models')
+var models = require('../models')
+global.models = models
+var sequelize = models.sequelize
 
 module.exports = {
   createChapter (attributes = {}) {
-    return db.Chapter.create({
+    return models.Chapter.create({
       title: attributes.title || 'Neues Chapter'
     })
   },
@@ -24,20 +26,35 @@ module.exports = {
     })
   },
 
-  after (after, closeConnection, timeout) {
-    console.log('outer')
-    after(() => setTimeout(() => {
-      console.log('inner')
-      Promise.all([
-        db.Chapter.destroy({
-          where: {},
-          truncate: true
+  truncateTables (modelsToTruncate) {
+    return sequelize.transaction(t => {
+      return sequelize.query('SET FOREIGN_KEY_CHECKS = 0', {transaction: t})
+        .then(() => {
+          const promises = []
+          modelsToTruncate.forEach(model => {
+            promises.push(model.destroy({
+              truncate: true, transaction: t
+            }))
+          })
+          return Promise.all(promises)
         })
+        .then(() => {
+          return sequelize.query('SET FOREIGN_KEY_CHECKS = 1', {transaction: t})
+        })
+    })
+  },
+
+  dbSetup (beforeEach, after) {
+    beforeEach(done => {
+      this.truncateTables([
+        models.Chapter
       ]).then(() => {
-        if (closeConnection) {
-          db.sequelize.close()
-        }
+        done()
       })
-    }, timeout))
+    })
+    after(done => {
+      models.sequelize.close()
+      done()
+    })
   }
 }

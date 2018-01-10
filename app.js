@@ -41,6 +41,11 @@ SwaggerRestify.create(swaggerConfig, function (err, swaggerRestify) {
     throw err
   }
 
+  // PARSING STUFF
+  app.use(restify.plugins.acceptParser(app.acceptable))
+  app.use(restify.plugins.queryParser())
+  app.use(restify.plugins.bodyParser({maxBodySize: 50 * 1024 * 1024})) // 50MB
+
   swaggerRestify.register(app)
 
   // ////////
@@ -87,6 +92,7 @@ SwaggerRestify.create(swaggerConfig, function (err, swaggerRestify) {
   app.on('error', onError)
   app.on('listening', onListening)
   var port = process.env.PORT || config.app_port
+
   app.listen(port)
 })
 
