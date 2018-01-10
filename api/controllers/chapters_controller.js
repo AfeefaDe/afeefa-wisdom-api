@@ -113,7 +113,7 @@ function destroy (req, res, next) {
 function meta (req, res, next) {
   models.Chapter.count().then(amount => {
     res.header('content-type', 'application/json')
-    res.end(amount)
+    res.json({ amount: amount })
   }).catch(err => {
     next(err)
   })
