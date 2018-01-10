@@ -73,7 +73,7 @@ describe('controllers', function () {
             .expect(200)
             .then(res => {
               models.Chapter.count().then(amount => {
-                expect(res.body).to.equal(amount)
+                expect(res.body).to.equal({ amount: amount })
               })
               done()
             }).catch(err => {
