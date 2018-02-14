@@ -41,7 +41,13 @@ module.exports = {
   Param 2: a handle to the response object
  */
 function index (req, res, next) {
-  models.Chapter.findAll().then(chapters => {
+  let ids = req.swagger.params.ids.value
+  let query = {}
+  if(ids) {
+    ids = ids.split(',')
+    query = { where: { id: ids } }
+  }
+  models.Chapter.findAll(query).then(chapters => {
     if (chapters) {
       // https://github.com/swagger-api/swagger-node/issues/313#issuecomment-217765835 awkward
       res.header('content-type', 'application/json')

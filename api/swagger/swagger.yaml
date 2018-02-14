@@ -26,9 +26,9 @@ paths:
       # used as the method name of the controller
       operationId: index
       parameters:
-        - name: name
+        - name: ids
           in: query
-          description: The name of the person to whom to say chapters
+          description: Filter for given ids
           required: false
           type: string
       responses:

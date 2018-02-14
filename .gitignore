@@ -4,6 +4,7 @@ config/database.json
 
 # IDEs
 .idea/
+.idea/*
 
 # Logs
 logs
