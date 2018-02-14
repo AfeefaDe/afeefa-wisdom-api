@@ -93,6 +93,23 @@ describe('controllers', function () {
       })
     })
 
+    describe('DELETE /destroy', function () {
+      it('deletes a single chapter', function (done) {
+        testHelper.createChapter().then(newChapter => {
+          request(server)
+            .delete(`/chapters/${newChapter.id}`)
+            .set('Accept', 'application/json')
+            .expect(204)
+            .then(res => {
+              expect(res.body).to.be.empty()
+              done()
+            }).catch(err => {
+              done(err)
+            })
+        })
+      })
+    })
+
     describe('GET /meta', function () {
       it('returns the amount of chapters', function (done) {
         testHelper.createChapter().then(newChapter => {
