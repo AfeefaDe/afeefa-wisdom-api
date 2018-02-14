@@ -2,6 +2,9 @@
 config/config.json
 config/database.json
 
+# IDEs
+.idea/
+
 # Logs
 logs
 *.log
