@@ -43,7 +43,7 @@ module.exports = {
 function index (req, res, next) {
   let ids = req.swagger.params.ids.value
   let query = {}
-  if(ids) {
+  if (ids) {
     ids = ids.split(',')
     query = { where: { id: ids } }
   }

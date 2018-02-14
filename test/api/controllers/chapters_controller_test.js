@@ -50,26 +50,25 @@ describe('controllers', function () {
         ]).then(newChapters => {
           const newChapter = newChapters[0]
           const newChapter2 = newChapters[1]
-          const newChapter3 = newChapters[2]
           request(server)
-          .get('/chapters?ids=' + newChapter.id + ',' + newChapter2.id)
-          .set('Accept', 'application/json')
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .then(res => {
-            models.Chapter.findAll().then(chapters => {
-              expect(res.body.length).to.equal(2)
-              const chapter = res.body[0]
-              expect(chapter.id).to.deep.equal(newChapter.id)
-              expect(chapter.title).to.deep.equal(newChapter.title)
-              const chapter2 = res.body[1]
-              expect(chapter2.id).to.deep.equal(newChapter2.id)
-              expect(chapter2.title).to.deep.equal(newChapter2.title)
-              done()
+            .get('/chapters?ids=' + newChapter.id + ',' + newChapter2.id + ',' + (newChapter2.id + 99))
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then(res => {
+              models.Chapter.findAll().then(chapters => {
+                expect(res.body.length).to.equal(2)
+                const chapter = res.body[0]
+                expect(chapter.id).to.deep.equal(newChapter.id)
+                expect(chapter.title).to.deep.equal(newChapter.title)
+                const chapter2 = res.body[1]
+                expect(chapter2.id).to.deep.equal(newChapter2.id)
+                expect(chapter2.title).to.deep.equal(newChapter2.title)
+                done()
+              })
+            }).catch(err => {
+              done(err)
             })
-          }).catch(err => {
-            done(err)
-          })
         })
       })
     })
